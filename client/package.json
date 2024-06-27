@@ -7,9 +7,13 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "tailwindcss": "tailwindcss -i ./public/css/tailwind/input.css -o ./public/css/tailwind/output.css --watch"
   },
   "dependencies": {
     "astro": "^4.11.3"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
   }
 }
