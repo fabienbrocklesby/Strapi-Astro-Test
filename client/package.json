@@ -11,6 +11,7 @@
     "tailwindcss": "tailwindcss -i ./public/css/tailwind/input.css -o ./public/css/tailwind/output.css --watch"
   },
   "dependencies": {
+    "@astrojs/node": "^8.3.2",
     "astro": "^4.11.3"
   },
   "devDependencies": {

@@ -1,0 +1,52 @@
+---
+import Layout from "../../layouts/layout.astro";
+import EventCard from "../../components/EventCard.astro";
+
+const { eventId } = Astro.params;
+
+async function fetchEvent() {
+	try {
+		const response = await fetch(`http://localhost:1337/api/events/${eventId}`);
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.error("Failed to fetch event:", error);
+		return null;
+	}
+}
+
+function formatDate(dateString) {
+	const options: Intl.DateTimeFormatOptions = {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: true,
+	};
+
+	const date = new Date(dateString);
+	return new Intl.DateTimeFormat("en-US", options).format(date);
+}
+
+const eventResponse = await fetchEvent();
+const event = eventResponse?.data;
+---
+
+<Layout title=`${event.attributes.title}'s Details`>
+	<div>
+		<div class="w-full flex flex-col justify-center items-center text-center">
+			<h1 class="text-4xl">Individual Event Info</h1>
+			{
+				event ? (
+					<EventCard event={event} formatDate={formatDate} />
+				) : (
+					<p>Failed to load event details. Please try again later.</p>
+				)
+			}
+		</div>
+	</div>
+</Layout>

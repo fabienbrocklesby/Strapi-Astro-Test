@@ -1,0 +1,43 @@
+---
+import Layout from "../../layouts/layout.astro";
+import EventCard from "../../components/EventCard.astro";
+
+async function fetchEvents() {
+	const response = await fetch("http://localhost:1337/api/events");
+	const data = await response.json();
+	return data.data;
+}
+
+const events = await fetchEvents();
+
+function formatDate(dateString) {
+	const options: Intl.DateTimeFormatOptions = {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: true,
+	};
+
+	const date = new Date(dateString);
+	return new Intl.DateTimeFormat("en-US", options).format(date);
+}
+---
+
+<Layout title="Events Page">
+	<div class="w-full flex flex-col justify-center items-center text-center">
+		<h1 class="text-4xl">Events</h1>
+		<ul class="mx-auto">
+			{
+				events.map((event) => (
+					<li>
+						<a href={`/events/${event.id}`}>
+							<EventCard event={event} formatDate={formatDate} />
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</Layout>
